@@ -44,14 +44,15 @@ sites.each do |item|
     redirects = {}
   end
 
-  if item.has_key?('single_vhost')
+  if item.has_key?('single-vhost')
     # So we can 
     path = node['hf-lamp']['docroot-dir']
   else 
-  if item.has_key?('path')
-    path = node['hf-lamp']['docroot-dir'] + '/' + item['path']
-  else
-    path = node['hf-lamp']['docroot-dir'] + '/' + item['host']
+    if item.has_key?('path')
+        path = node['hf-lamp']['docroot-dir'] + '/' + item['path']
+    else
+        path = node['hf-lamp']['docroot-dir'] + '/' + item['host']
+    end
   end
  
   if item.has_key?('docroot')
