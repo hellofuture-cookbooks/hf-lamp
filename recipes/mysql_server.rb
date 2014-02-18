@@ -12,7 +12,7 @@ include_recipe "hf-lamp::mysql_dependencies"
 sites = []
 
 if Chef::Config[:solo]
-  sites = node['phpapp']['sites']
+  sites = node['hf-lamp']['sites']
 else 
   dsites = data_bag('sites')
 

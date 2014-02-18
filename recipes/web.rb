@@ -68,23 +68,15 @@ sites.each do |item|
     action :create
     recursive true
   end
-  
+
   if item.has_key?('db') and item['db'].has_key?('host')
     db_host = item['db']['host']
   else
     db_host = 'localhost'
   end
 
-  if item.has_key?('passwd_protected')
-    passwd = true
-  else 
-    passwd = false
-  end
-
-  # write a wp-config file as an example with the correct database settings in
-
-  if item.has_key?('db')
-    template docroot + '/wp-config.php.example' do
+  if item.has_key?('wordpress') and item.has_key?('db')
+    template docroot + '/wp-config.php' do
       source 'wp-config.php.erb'
       mode 0755
       owner 'root'
@@ -95,6 +87,12 @@ sites.each do |item|
         :password => item['db']['password'],
         :host     => db_host)
     end
+  end
+
+  if item.has_key?('passwd_protected')
+    passwd = true
+  else 
+    passwd = false
   end
 
   web_app item['host'] do
