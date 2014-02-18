@@ -76,6 +76,13 @@ sites.each do |item|
   end
 
   if item.has_key?('wordpress') and item.has_key?('db')
+
+    if item['wordpress'].has_key?('prefix')
+      prefix = item['wordpress']['prefix']
+    else
+      prefix = node['hf-lamp']['wordpress']['prefix']
+    end
+
     template docroot + '/wp-config.php' do
       source 'wp-config.php.erb'
       mode 0755
@@ -85,6 +92,7 @@ sites.each do |item|
         :database => item['db']['name'],
         :user     => item['db']['user'],
         :password => item['db']['password'],
+        :prefix   => prefix,
         :host     => db_host)
     end
   end
