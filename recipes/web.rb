@@ -9,6 +9,13 @@
 
 include_recipe "hf-lamp::web_dependencies"
 
+if platform?("ubuntu")
+  template '/etc/php5/apache2/php.ini' do 
+    source node.default['hf-lamp']['php']['php.ini']
+    notifies :restart, "service[apache2]"
+  end
+end
+
 apache_site "default" do
   enable false
 end
@@ -94,6 +101,34 @@ sites.each do |item|
         :password => item['db']['password'],
         :prefix   => prefix,
         :host     => db_host)
+    end
+  end
+
+  if item.has_key?('magento')
+    if item['magento'].has_key?('install')
+      magento_path = File.join(Chef::Config['file_cache_path'], 'magento.tar.gz')
+
+      remote_file magento_path do
+        source node['hf-lamp']['magento']['url']
+        mode "0644"
+      end
+
+      execute 'untar-magento' do
+        cwd docroot
+        command 'tar --strip-components 1 -xzf ' + magento_path
+      end
+
+      user = 'www-data'
+      group = 'www-data'
+
+      bash "Ensure correct permissions & ownership" do
+        cwd docroot
+        code <<-EOH
+          chown -R #{user}:#{group} #{docroot}
+          chmod -R o+w media
+          chmod -R o+w var
+        EOH
+      end
     end
   end
 
