@@ -138,9 +138,17 @@ sites.each do |item|
     passwd = false
   end
 
+  if node['hf-lamp'].has_key?('log_path')
+    log_path = node['hf-lamp']['log_path']
+  else 
+    log_path = path
+  end
+
   web_app item['host'] do
     template "site.conf.erb"
     server_name item['host']
+    port node['hf-lamp']['port']
+    log_path log_path
     path path
     docroot docroot
     server_aliases aliases
