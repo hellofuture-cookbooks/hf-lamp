@@ -145,7 +145,7 @@ sites.each do |item|
     log_path = path
   end
 
-  if item.has_key?('per-host-log')
+  if node['hf-lamp'].has_key?('per-host-log') and node['hf-lamp']['per-host-log'] = true
     if item.has_key?('path')
       log_path = File.join(log_path, item['path'])
     else
