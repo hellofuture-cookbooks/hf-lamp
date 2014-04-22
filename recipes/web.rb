@@ -145,12 +145,21 @@ sites.each do |item|
     log_path = path
   end
 
-  if node['hf-lamp'].has_key?('per-host-log') and node['hf-lamp']['per-host-log'] == true
+  log item
+
+  if node['hf-lamp'].has_key?('per-host-log') and node['hf-lamp']['per-host-log']
     if item.has_key?('path')
       log_path = File.join(log_path, item['path'])
     else
       log_path = File.join(log_path, item['host'])
     end
+  end
+
+  directory log_path do
+    owner 'root'
+    group 'root'
+    mode 0755
+    action :create
   end
 
   web_app item['host'] do
