@@ -3,6 +3,10 @@ hf-lamp CHANGELOG
 
 This file is used to list changes made in each version of the hf-lamp cookbook.
 
+0.1.10
+-----
+- Andy Gale - Fixed `per-host-log`, need to test this cookbook properly SOON
+
 0.1.9
 -----
 - Andy Gale - Changed `per-host-log` to be a node attribute which makes more sense
