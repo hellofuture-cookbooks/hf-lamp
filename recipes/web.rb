@@ -104,33 +104,34 @@ sites.each do |item|
     end
   end
 
-  if item.has_key?('magento')
-    if item['magento'].has_key?('install')
-      magento_path = File.join(Chef::Config['file_cache_path'], 'magento.tar.gz')
+  # magento support isn't finished
+  # if item.has_key?('magento')
+  #   if item['magento'].has_key?('install')
+  #     magento_path = File.join(Chef::Config['file_cache_path'], 'magento.tar.gz')
 
-      remote_file magento_path do
-        source node['hf-lamp']['magento']['url']
-        mode "0644"
-      end
+  #     remote_file magento_path do
+  #       source node['hf-lamp']['magento']['url']
+  #       mode "0644"
+  #     end
 
-      execute 'untar-magento' do
-        cwd docroot
-        command 'tar --strip-components 1 -xzf ' + magento_path
-      end
+  #     execute 'untar-magento' do
+  #       cwd docroot
+  #       command 'tar --strip-components 1 -xzf ' + magento_path
+  #     end
 
-      user = 'www-data'
-      group = 'www-data'
+  #     user = 'www-data'
+  #     group = 'www-data'
 
-      bash "Ensure correct permissions & ownership" do
-        cwd docroot
-        code <<-EOH
-          chown -R #{user}:#{group} #{docroot}
-          chmod -R o+w media
-          chmod -R o+w var
-        EOH
-      end
-    end
-  end
+  #     bash "Ensure correct permissions & ownership" do
+  #       cwd docroot
+  #       code <<-EOH
+  #         chown -R #{user}:#{group} #{docroot}
+  #         chmod -R o+w media
+  #         chmod -R o+w var
+  #       EOH
+  #     end
+  #   end
+  # end
 
   if item.has_key?('passwd_protected')
     passwd = true
@@ -142,6 +143,14 @@ sites.each do |item|
     log_path = node['hf-lamp']['log_path']
   else 
     log_path = path
+  end
+
+  if item.has_key?('per-host-log')
+    if item.has_key?('path')
+      log_path = File.join(log_path, item['path'])
+    else
+      log_path = File.join(log_path, item['host'])
+    end
   end
 
   web_app item['host'] do
