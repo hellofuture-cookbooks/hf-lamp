@@ -39,8 +39,14 @@
   <% @params[:url_redirects].each do |src, dest| %>
   Redirect <%= src %> <%= dest %>
   <% end %>
-
   <% end %>
+
+  <% unless @params[:extra_directives].empty? %>
+  <% @params[:extra_directives].each do |dir| %>
+  <%= dir %>
+  <% end %>
+  <% end %>
+  
   LogLevel info
   ErrorLog <%= @params[:log_path] %>/error.log
   CustomLog <%= @params[:log_path] %>/access.log combined

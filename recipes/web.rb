@@ -145,14 +145,18 @@ sites.each do |item|
     log_path = path
   end
 
-  log item
-
   if node['hf-lamp'].has_key?('per-host-log') and node['hf-lamp']['per-host-log']
     if item.has_key?('path')
       log_path = File.join(log_path, item['path'])
     else
       log_path = File.join(log_path, item['host'])
     end
+  end
+
+  if item.has_key?('extra_directives')
+    extra_directives = item['extra_directives']
+  else 
+    extra_directives = []
   end
 
   directory log_path do
@@ -172,5 +176,6 @@ sites.each do |item|
     server_aliases aliases
     url_redirects redirects
     passwd passwd
+    extra_directives extra_directives
   end
 end
