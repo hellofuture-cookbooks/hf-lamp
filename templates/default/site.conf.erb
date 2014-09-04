@@ -47,7 +47,14 @@
   <% end %>
   <% end %>
   
+  <% if @params[:canonical_redirect] %>
+  # Canonical host, <%= @params[:server_name] %>
+  RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name] %> [NC]
+  RewriteCond %{HTTP_HOST}   !^$
+  RewriteRule ^/(.*)$        http://<%= @params[:server_name] %>/$1 [L,R=301]
+  <% end %>
+
   LogLevel info
   ErrorLog <%= @params[:log_path] %>/error.log
-  CustomLog <%= @params[:log_path] %>/access.log combined
+  CustomLog <%= @params[:log_path] %>/access.log <%= @params[:log_format] %>
 </VirtualHost>

@@ -16,6 +16,13 @@ if platform?("ubuntu")
   end
 end
 
+template File.join(node['apache']['dir'], 'conf.d', 'combined_new.conf') do
+  owner 'root'
+  group node['apache']['root_group']
+  mode '0644'
+  notifies :restart, 'service[apache2]'
+end
+
 apache_site "default" do
   enable false
 end
@@ -159,6 +166,12 @@ sites.each do |item|
     extra_directives = []
   end
 
+  if item.has_key?('canonical_redirect')
+    canonical_redirect = true
+  else 
+    canonical_redirect = false
+  end
+
   directory log_path do
     owner 'root'
     group 'root'
@@ -171,11 +184,13 @@ sites.each do |item|
     server_name item['host']
     port node['hf-lamp']['port']
     log_path log_path
+    log_format node['hf-lamp']['access-log-format'] 
     path path
     docroot docroot
     server_aliases aliases
     url_redirects redirects
     passwd passwd
     extra_directives extra_directives
+    canonical_redirect canonical_redirect
   end
 end
