@@ -16,6 +16,13 @@ if platform?("ubuntu")
   end
 end
 
+directory File.join(node['apache']['dir'], 'conf.d') do 
+  owner 'root'
+  group node['apache']['root_group']
+  mode '0644'
+  action :create
+end
+
 template File.join(node['apache']['dir'], 'conf.d', 'combined_new.conf') do
   owner 'root'
   group node['apache']['root_group']
