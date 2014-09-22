@@ -7,3 +7,4 @@ default['hf-lamp']['php']['upload_max_filesize'] = '50M'
 default['hf-lamp']['php']['memory_limit'] = '128M'
 default['hf-lamp']['port'] = 80
 default['hf-lamp']['access-log-format'] = 'combined'
+default['hf-lamp']['sites-databag'] = 'sites'

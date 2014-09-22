@@ -39,10 +39,10 @@ sites = []
 if Chef::Config[:solo]
   sites = node['hf-lamp']['sites']
 else 
-  dsites = data_bag('sites')
+  dsites = data_bag(node['hf-lamp']['sites-databag'])
 
   dsites.each do |site|
-    item = data_bag_item("sites", site)
+    item = data_bag_item(node['hf-lamp']['sites-databag'], site)
     sites.push(item)
   end
 end
