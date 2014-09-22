@@ -1,6 +1,9 @@
 hf-lamp
 =======
 
+[![Build Status](https://api.travis-ci.org/hellofuture-cookbooks/hf-lamp.png)](https://api.travis-ci.org/hellofuture-cookbooks/hf-lamp)
+
+
 Multi-site and vagrant compatible cookbook for PHP apache hosting
 
 More docs and tests coming soon
