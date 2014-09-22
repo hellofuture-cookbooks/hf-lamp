@@ -8,3 +8,4 @@ default['hf-lamp']['php']['memory_limit'] = '128M'
 default['hf-lamp']['port'] = 80
 default['hf-lamp']['access-log-format'] = 'combined'
 default['hf-lamp']['sites-databag'] = 'sites'
+default['hf-lamp']['has-web-dir'] = true

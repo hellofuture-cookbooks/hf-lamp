@@ -78,8 +78,10 @@ sites.each do |item|
  
   if item.has_key?('docroot')
     docroot = path + '/' + item['docroot']
-  else 
+  elsif node['hf-lamp']['has-web-dir']
     docroot = path + '/' + node['hf-lamp']['web-dir']
+  else
+    docroot = path
   end
 
   directory docroot do
