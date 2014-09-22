@@ -1,7 +1,3 @@
-AllCops:
-  Excludes:
-    - vendor/**
-
 AlignParameters:
   Enabled: false
 Encoding:

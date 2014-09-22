@@ -7,16 +7,15 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "hf-lamp::web_dependencies"
+include_recipe 'hf-lamp::web_dependencies'
 
-
-template '/etc/php5/apache2/php.ini' do 
+template '/etc/php5/apache2/php.ini' do
   source node.default['hf-lamp']['php']['php.ini']
-  notifies :restart, "service[apache2]"
+  notifies :restart, 'service[apache2]'
   only_if { node['platform'] == 'ubuntu' }
 end
 
-directory File.join(node['apache']['dir'], 'conf.d') do 
+directory File.join(node['apache']['dir'], 'conf.d') do
   owner 'root'
   group node['apache']['root_group']
   mode '0644'
@@ -30,7 +29,7 @@ template File.join(node['apache']['dir'], 'conf.d', 'combined_new.conf') do
   notifies :restart, 'service[apache2]'
 end
 
-apache_site "default" do
+apache_site 'default' do
   enable false
 end
 
@@ -38,7 +37,7 @@ sites = []
 
 if Chef::Config[:solo]
   sites = node['hf-lamp']['sites']
-else 
+else
   dsites = data_bag(node['hf-lamp']['sites-databag'])
 
   dsites.each do |site|
@@ -51,32 +50,31 @@ sites.each do |item|
 
   # Any virtual host aliases?
 
-  if item.has_key?('aliases')
-    aliases = item['aliases'] 
+  if item.key?('aliases')
+    aliases = item['aliases']
   else
     aliases = []
   end
 
   # Any redirects?
 
-  if item.has_key?('redirects')
-    redirects = item['redirects'] 
+  if item.key?('redirects')
+    redirects = item['redirects']
   else
     redirects = {}
   end
 
-  if item.has_key?('single-vhost')
-    # So we can 
+  if item.key?('single-vhost')
     path = node['hf-lamp']['docroot-dir']
-  else 
-    if item.has_key?('path')
-        path = node['hf-lamp']['docroot-dir'] + '/' + item['path']
+  else
+    if item.key?('path')
+      path = node['hf-lamp']['docroot-dir'] + '/' + item['path']
     else
-        path = node['hf-lamp']['docroot-dir'] + '/' + item['host']
+      path = node['hf-lamp']['docroot-dir'] + '/' + item['host']
     end
   end
- 
-  if item.has_key?('docroot')
+
+  if item.key?('docroot')
     docroot = path + '/' + item['docroot']
   elsif node['hf-lamp']['has-web-dir']
     docroot = path + '/' + node['hf-lamp']['web-dir']
@@ -92,15 +90,15 @@ sites.each do |item|
     recursive true
   end
 
-  if item.has_key?('db') and item['db'].has_key?('host')
+  if item.key?('db') && item['db'].key?('host')
     db_host = item['db']['host']
   else
     db_host = 'localhost'
   end
 
-  if item.has_key?('wordpress') and item.has_key?('db')
+  if item.key?('wordpress') && item.key?('db')
 
-    if item['wordpress'].has_key?('prefix')
+    if item['wordpress'].key?('prefix')
       prefix = item['wordpress']['prefix']
     else
       prefix = node['hf-lamp']['wordpress']['prefix']
@@ -149,35 +147,35 @@ sites.each do |item|
   #   end
   # end
 
-  if item.has_key?('passwd_protected')
+  if item.key?('passwd_protected')
     passwd = true
-  else 
+  else
     passwd = false
   end
 
-  if node['hf-lamp'].has_key?('log_path')
+  if node['hf-lamp'].key?('log_path')
     log_path = node['hf-lamp']['log_path']
-  else 
+  else
     log_path = path
   end
 
-  if node['hf-lamp'].has_key?('per-host-log') and node['hf-lamp']['per-host-log']
-    if item.has_key?('path')
+  if node['hf-lamp'].key?('per-host-log') && node['hf-lamp']['per-host-log']
+    if item.key?('path')
       log_path = File.join(log_path, item['path'])
     else
       log_path = File.join(log_path, item['host'])
     end
   end
 
-  if item.has_key?('extra_directives')
+  if item.key?('extra_directives')
     extra_directives = item['extra_directives']
-  else 
+  else
     extra_directives = []
   end
 
-  if item.has_key?('canonical_redirect')
+  if item.key?('canonical_redirect')
     canonical_redirect = true
-  else 
+  else
     canonical_redirect = false
   end
 
@@ -189,11 +187,11 @@ sites.each do |item|
   end
 
   web_app item['host'] do
-    template "site.conf.erb"
+    template 'site.conf.erb'
     server_name item['host']
     port node['hf-lamp']['port']
     log_path log_path
-    log_format node['hf-lamp']['access-log-format'] 
+    log_format node['hf-lamp']['access-log-format']
     path path
     docroot docroot
     server_aliases aliases
