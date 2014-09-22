@@ -35,7 +35,7 @@ sites.each do |item|
       password item['db']['password']
       database_name item['db']['name']
       host item['db']['host']
-      privileges [:select,:update,:alter,:insert,:create,:delete]
+      privileges [:select,:update,:alter,:insert,:create,:delete,:drop]
       action :grant
     end
   end
