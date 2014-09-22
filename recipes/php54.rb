@@ -8,7 +8,7 @@
 #
 # Install PHP54
 
-if platform?("ubuntu") and node.platform_version == '12.04'
+if platform?("ubuntu") and node['platform_version'] == '12.04'
   include_recipe 'apt'
   node.default['hf-lamp']['php']['php.ini'] = 'apache-php-54.ini.erb'
 

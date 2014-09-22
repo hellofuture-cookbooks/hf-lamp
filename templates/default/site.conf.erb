@@ -2,7 +2,7 @@
 
 <VirtualHost *:<%= @params[:port] %>>
   ServerName <%= @params[:server_name] %>
-  <% unless @params[:server_aliases].empty? %>ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %><% end %>
+  <% unless @params[:server_aliases].empty? %>ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %><% end %>
   DocumentRoot <%= @params[:docroot] %>
 
   <Directory <%= @params[:docroot] %>>

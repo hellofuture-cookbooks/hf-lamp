@@ -9,11 +9,11 @@
 
 include_recipe "hf-lamp::web_dependencies"
 
-if platform?("ubuntu")
-  template '/etc/php5/apache2/php.ini' do 
-    source node.default['hf-lamp']['php']['php.ini']
-    notifies :restart, "service[apache2]"
-  end
+
+template '/etc/php5/apache2/php.ini' do 
+  source node.default['hf-lamp']['php']['php.ini']
+  notifies :restart, "service[apache2]"
+  only_if { node['platform'] == 'ubuntu' }
 end
 
 directory File.join(node['apache']['dir'], 'conf.d') do 
