@@ -36,7 +36,7 @@ end
 sites = []
 
 if Chef::Config[:solo]
-  sites = node['hf-lamp']['sites']
+  sites = node['hf-lamp']['sites'] if node['hf-lamp'].key?('sites')
 else
   dsites = data_bag(node['hf-lamp']['sites-databag'])
 
