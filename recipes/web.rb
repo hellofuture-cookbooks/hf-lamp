@@ -90,15 +90,15 @@ sites.each do |item|
     recursive true
   end
 
-  if item.key?('db') && item['db'].key?('host')
-    db_host = item['db']['host']
-  else
-    db_host = 'localhost'
-  end
-
   if item.key?('wordpress') && item.key?('db')
 
-    if item['wordpress'].key?('prefix')
+    if item.key?('db') && item['db'].key?('host')
+      db_host = item['db']['host']
+    else
+      db_host = 'localhost'
+    end
+
+    if item['wordpress'].is_a?(Hash) && item['wordpress'].key?('prefix')
       prefix = item['wordpress']['prefix']
     else
       prefix = node['hf-lamp']['wordpress']['prefix']
@@ -113,8 +113,8 @@ sites.each do |item|
         :database => item['db']['name'],
         :user     => item['db']['user'],
         :password => item['db']['password'],
-        :prefix   => prefix,
-        :host     => db_host)
+        :host     => db_host,
+        :prefix   => prefix)
     end
   end
 

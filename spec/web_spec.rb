@@ -172,4 +172,72 @@ describe 'hf-lamp::web' do
     chef_run.converge(described_recipe)
     expect(chef_run).to create_directory('/var/www/andy-gale.com/www').with_owner('root').with_group('root').with_mode(0755).with_action([:create]).with_recursive(true)
   end
+
+  it 'writes WordPress configuration if db and wordpress options are set' do
+    chef_run.node.automatic['hf-lamp']['sites'] = [{
+      'id' => 'andygale',
+      'host' => 'andy-gale.com',
+      'wordpress' => true,
+      'db' => {
+        'name' => 'a',
+        'user' => 'a',
+        'password' => 'a'
+      }
+    }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_template('/var/www/andy-gale.com/www/wp-config.php').with_variables(
+      :database => 'a',
+      :user => 'a',
+      :password => 'a',
+      :host => 'localhost',
+      :prefix => 'wp_'
+    )
+  end
+
+  it 'writes correction prefix in WordPress configuration' do
+    chef_run.node.automatic['hf-lamp']['sites'] = [{
+      'id' => 'andygale',
+      'host' => 'andy-gale.com',
+      'wordpress' => {
+        'prefix' => 'face_'
+      },
+      'db' => {
+        'name' => 'a',
+        'user' => 'a',
+        'password' => 'a'
+      }
+    }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_template('/var/www/andy-gale.com/www/wp-config.php').with_variables(
+      :database => 'a',
+      :user => 'a',
+      :password => 'a',
+      :host => 'localhost',
+      :prefix => 'face_'
+    )
+  end
+
+  it 'writes correction db host in WordPress configuration' do
+    chef_run.node.automatic['hf-lamp']['sites'] = [{
+      'id' => 'andygale',
+      'host' => 'andy-gale.com',
+      'wordpress' => {
+        'prefix' => 'face_'
+      },
+      'db' => {
+        'name' => 'a',
+        'user' => 'a',
+        'password' => 'a',
+        'host' => '10.0.66.6'
+      }
+    }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_template('/var/www/andy-gale.com/www/wp-config.php').with_variables(
+      :database => 'a',
+      :user => 'a',
+      :password => 'a',
+      :host => '10.0.66.6',
+      :prefix => 'face_'
+    )
+  end
 end
