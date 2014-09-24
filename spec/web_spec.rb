@@ -166,4 +166,10 @@ describe 'hf-lamp::web' do
       :name => 'andy-gale.com'
     )
   end
+
+  it 'creates docroot directory' do
+    chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'host' => 'andy-gale.com' }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_directory('/var/www/andy-gale.com/www').with_owner('root').with_group('root').with_mode(0755).with_action([:create]).with_recursive(true)
+  end
 end
