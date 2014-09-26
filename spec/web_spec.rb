@@ -240,4 +240,27 @@ describe 'hf-lamp::web' do
       :prefix => 'face_'
     )
   end
+
+  it 'honours the password protection option' do
+    chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'host' => 'andy-gale.com', 'passwd_protected' => true }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_template(sites_available + '/andy-gale.com.conf').with_params(
+      :template => 'site.conf.erb',
+      :local => false,
+      :enable => true,
+      :server_name => 'andy-gale.com',
+      :port => 80,
+      :log_path => '/var/www/andy-gale.com',
+      :log_format => 'combined',
+      :path => '/var/www/andy-gale.com',
+      :docroot => '/var/www/andy-gale.com/www',
+      :server_aliases => [],
+      :url_redirects => {},
+      :passwd => true,
+      :extra_directives => [],
+      :canonical_redirect => false,
+      :name => 'andy-gale.com'
+    )
+  end
+
 end
