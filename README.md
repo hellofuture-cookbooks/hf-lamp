@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/hellofuture-cookbooks/hf-lamp.png?label=ready&title=Ready)](https://waffle.io/hellofuture-cookbooks/hf-lamp)
 hf-lamp
 =======
 
