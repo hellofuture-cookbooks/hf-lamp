@@ -1,6 +1,7 @@
 [![Stories in Ready](https://badge.waffle.io/hellofuture-cookbooks/hf-lamp.png?label=ready&title=Ready)](https://waffle.io/hellofuture-cookbooks/hf-lamp)
 hf-lamp
 =======
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/hellofuture-cookbooks/hf-lamp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Build Status](https://api.travis-ci.org/hellofuture-cookbooks/hf-lamp.png)](https://travis-ci.org/hellofuture-cookbooks/hf-lamp/)
 
