@@ -82,9 +82,23 @@ sites.each do |item|
     docroot = path
   end
 
+  # Use default apache users not root
+
+  if item.key?('user')
+    user = item['user']
+  else
+    user = node['apache']['user']
+  end
+
+  if item.key?('group')
+    group = item['group']
+  else
+    group = node['apache']['group']
+  end
+
   directory docroot do
-    owner 'root'
-    group 'root'
+    owner user
+    group group
     mode 0755
     action :create
     recursive true
@@ -155,6 +169,13 @@ sites.each do |item|
 
   if node['hf-lamp'].key?('log_path')
     log_path = node['hf-lamp']['log_path']
+
+    directory log_path do
+      owner 'root'
+      group 'root'
+      mode 0755
+      action :create
+    end
   else
     log_path = path
   end
@@ -177,13 +198,6 @@ sites.each do |item|
     canonical_redirect = true
   else
     canonical_redirect = false
-  end
-
-  directory log_path do
-    owner 'root'
-    group 'root'
-    mode 0755
-    action :create
   end
 
   web_app item['host'] do

@@ -170,7 +170,25 @@ describe 'hf-lamp::web' do
   it 'creates docroot directory' do
     chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'host' => 'andy-gale.com' }]
     chef_run.converge(described_recipe)
-    expect(chef_run).to create_directory('/var/www/andy-gale.com/www').with_owner('root').with_group('root').with_mode(0755).with_action([:create]).with_recursive(true)
+    expect(chef_run).to create_directory('/var/www/andy-gale.com/www').with_owner('www-data').with_group('www-data').with_mode(0755).with_action([:create]).with_recursive(true)
+  end
+
+  it 'creates docroot directory with custom user if specified' do
+    chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'host' => 'andy-gale.com', 'user' => 'andygale' }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_directory('/var/www/andy-gale.com/www').with_owner('andygale').with_group('www-data').with_mode(0755).with_action([:create]).with_recursive(true)
+  end
+
+  it 'creates docroot directory with custom group if specified' do
+    chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'host' => 'andy-gale.com', 'group' => 'andygale' }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_directory('/var/www/andy-gale.com/www').with_owner('www-data').with_group('andygale').with_mode(0755).with_action([:create]).with_recursive(true)
+  end
+
+  it 'creates docroot directory with custom user and group if specified' do
+    chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'host' => 'andy-gale.com', 'user' => 'andygale', 'group' => 'andygale' }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_directory('/var/www/andy-gale.com/www').with_owner('andygale').with_group('andygale').with_mode(0755).with_action([:create]).with_recursive(true)
   end
 
   it 'writes WordPress configuration if db and wordpress options are set' do
