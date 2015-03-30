@@ -7,5 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
+chef_gem 'mysql2'
+
 include_recipe 'mysql::server'
 include_recipe 'mysql::ruby'

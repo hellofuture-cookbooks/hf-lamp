@@ -23,7 +23,6 @@ else
 end
 
 sites.each do |item|
-
   db_connection = { :host => 'localhost',
                     :username => 'root',
                     :password => node['mysql']['server_root_password'] }
@@ -43,5 +42,4 @@ sites.each do |item|
     privileges [:select, :update, :alter, :insert, :create, :delete]
     action :grant
   end
-
 end

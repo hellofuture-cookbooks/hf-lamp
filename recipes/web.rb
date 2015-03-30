@@ -47,7 +47,6 @@ else
 end
 
 sites.each do |item|
-
   # Any virtual host aliases?
 
   if item.key?('aliases')
