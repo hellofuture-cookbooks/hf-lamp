@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+node.set['apache']['mpm'] = 'prefork'
+
 include_recipe 'hf-lamp::web_dependencies'
 
 template '/etc/php5/apache2/php.ini' do
@@ -15,22 +17,8 @@ template '/etc/php5/apache2/php.ini' do
   only_if { node['platform'] == 'ubuntu' }
 end
 
-directory File.join(node['apache']['dir'], 'conf.d') do
-  owner 'root'
-  group node['apache']['root_group']
-  mode '0644'
-  action :create
-end
-
-template File.join(node['apache']['dir'], 'conf.d', 'combined_new.conf') do
-  owner 'root'
-  group node['apache']['root_group']
-  mode '0644'
-  notifies :restart, 'service[apache2]'
-end
-
-apache_site 'default' do
-  enable false
+apache_conf 'combined_new' do
+  enable true
 end
 
 sites = []

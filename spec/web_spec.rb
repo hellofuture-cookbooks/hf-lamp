@@ -2,12 +2,11 @@ require 'spec_helper'
 
 describe 'hf-lamp::web' do
   let(:chef_run) do
-    ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04')
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04')
   end
 
   apache2_binary = '/usr/sbin/apache2'
   php_ini = '/etc/php5/apache2/php.ini'
-  conf_d = '/etc/apache2/conf.d'
   sites_available = '/etc/apache2/sites-available'
 
   before do
@@ -23,16 +22,6 @@ describe 'hf-lamp::web' do
   it 'should write out a custom php.ini' do
     chef_run.converge(described_recipe)
     expect(chef_run).to create_template(php_ini)
-  end
-
-  it 'should create the directory conf.d' do
-    chef_run.converge(described_recipe)
-    expect(chef_run).to create_directory(conf_d).with_user('root')
-  end
-
-  it 'should write out combined_new.conf' do
-    chef_run.converge(described_recipe)
-    expect(chef_run).to create_template(conf_d + '/combined_new.conf')
   end
 
   it 'should write out a andygale.conf' do

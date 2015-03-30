@@ -1,0 +1,31 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-12.04
+  - name: ubuntu-14.04
+  - name: centos-6.6
+
+suites:
+  - name: default
+    run_list:
+      - recipe[hf-lamp::default]
+    attributes:
+      mysql:
+        server_debian_password: a
+        server_root_password: a
+        server_repl_password: a
+      hf-lamp:
+        sites:
+          - id: andygale
+            host: andy-gale.com
+            manage_db: y
+            db:
+              name: 'a'
+              user: 'a'
+              password: 'a'
+              host: 'localhost'

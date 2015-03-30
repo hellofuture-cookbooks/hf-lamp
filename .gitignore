@@ -1,3 +1,4 @@
 .DS_Store
 Berksfile.lock
 Gemfile.lock
+.kitchen
