@@ -213,7 +213,7 @@ sites.each do |item|
     if item['composer'].key?('dev') && item['composer']['dev']
       dev = false
     else
-      dev = true 
+      dev = true
     end
 
     if item['composer'].key('path')

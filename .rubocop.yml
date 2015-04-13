@@ -8,3 +8,5 @@ LineLength:
   Enabled: false
 MethodLength:
   Max: 30
+GuardClause:
+  Enabled: false
