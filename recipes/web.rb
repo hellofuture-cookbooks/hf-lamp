@@ -201,4 +201,30 @@ sites.each do |item|
     extra_directives extra_directives
     canonical_redirect canonical_redirect
   end
+
+  if item.key?('composer')
+    if item['composer'].key?('dev') && item['composer']['dev']
+      dev = false
+    else
+      dev = true 
+    end
+
+    if item['composer'].key('path')
+      composer_path = item['composer']['path']
+    else
+      composer_path = path
+    end
+
+    if item['composer'].key('action')
+      composer_action = item['composer']['action']
+    else
+      composer_action = :install
+    end
+
+    composer_project composer_path do
+      dev dev
+      quiet true
+      action composer_action
+    end
+  end
 end

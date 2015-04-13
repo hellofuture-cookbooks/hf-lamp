@@ -9,8 +9,12 @@
     Options FollowSymLinks
     AllowOverride FileInfo Options
     AllowOverride All
+  <% if node['apache']['version'] == '2.4' -%>
+    Require all granted
+  <% else -%>
     Order allow,deny
     Allow from all
+  <% end -%>
    
     <% if @params[:passwd] %>
     AuthType Basic
@@ -24,10 +28,20 @@
   <Directorymatch "^/.*/\.git+/">
     Order deny,allow
     Deny from all
+  <% if node['apache']['version'] == '2.4' -%>
+    Require all denied
+  <% else -%>
+    Order deny,allow
+    Deny from all
+  <% end -%>
   </Directorymatch>
   <Files ~ "^\.git">
-    Order allow,deny
-    Deny from all 
+  <% if node['apache']['version'] == '2.4' -%>
+    Require all denied
+  <% else -%>
+    Order deny,allow
+    Deny from all
+  <% end -%>
   </Files>
 
   <Directory />
