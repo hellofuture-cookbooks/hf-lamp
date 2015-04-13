@@ -34,7 +34,7 @@ else
   end
 end
 
-composer_done = false
+node['hf-lamp']['use_sites'] = sites
 
 sites.each do |item|
   # Any virtual host aliases?
@@ -203,37 +203,6 @@ sites.each do |item|
     extra_directives extra_directives
     canonical_redirect canonical_redirect
   end
-
-  next unless item.key?('composer')
-
-  # Finally composer stuff
-  unless composer_done
-    include_recipe 'composer'
-    composer_done = true
-  end
-
-  if item['composer'].key?('dev') && item['composer']['dev']
-    dev = false
-  else
-    dev = true
-  end
-
-  if item['composer'].key('path')
-    composer_path = item['composer']['path']
-  else
-    composer_path = path
-  end
-
-  if item['composer'].key('action')
-    composer_action = item['composer']['action']
-  else
-    composer_action = :install
-  end
-
-  composer_project composer_path do
-    dev dev
-    quiet true
-    action composer_action
-    only_if { ::File.exist?(File.join(composer_path, 'composer.json')) }
-  end
 end
+
+include_recipe 'hf-lamp::composer'
