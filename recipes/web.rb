@@ -34,6 +34,8 @@ else
   end
 end
 
+composer_done = false
+
 sites.each do |item|
   # Any virtual host aliases?
 
@@ -203,6 +205,11 @@ sites.each do |item|
   end
 
   if item.key?('composer')
+    unless composer_done
+      include_recipe 'composer'
+      composer_done = true
+    end
+
     if item['composer'].key?('dev') && item['composer']['dev']
       dev = false
     else
@@ -225,6 +232,7 @@ sites.each do |item|
       dev dev
       quiet true
       action composer_action
+      only_if { ::File.exist?(File.join(composer_path, 'composer.json')) }
     end
   end
 end
