@@ -61,6 +61,8 @@
   <% end %>
   <% end %>
   
+  <% if @params[:vagrant] %>EnableSendfile Off<% end %>
+
   <% if @params[:canonical_redirect] %>
   # Canonical host, <%= @params[:server_name] %>
   RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name] %> [NC]

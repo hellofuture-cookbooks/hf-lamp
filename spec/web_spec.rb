@@ -42,7 +42,8 @@ describe 'hf-lamp::web' do
       :passwd => false,
       :extra_directives => [],
       :canonical_redirect => false,
-      :name => 'andy-gale.com'
+      :name => 'andy-gale.com',
+      :vagrant => false
     )
   end
 
@@ -64,7 +65,8 @@ describe 'hf-lamp::web' do
       :passwd => false,
       :extra_directives => [],
       :canonical_redirect => false,
-      :name => 'andy-gale.com'
+      :name => 'andy-gale.com',
+      :vagrant => false
     )
   end
 
@@ -86,7 +88,8 @@ describe 'hf-lamp::web' do
       :passwd => false,
       :extra_directives => [],
       :canonical_redirect => false,
-      :name => 'andy-gale.com'
+      :name => 'andy-gale.com',
+      :vagrant => false
     )
   end
 
@@ -108,7 +111,8 @@ describe 'hf-lamp::web' do
       :passwd => false,
       :extra_directives => [],
       :canonical_redirect => false,
-      :name => 'andy-gale.com'
+      :name => 'andy-gale.com',
+      :vagrant => false
     )
   end
 
@@ -130,7 +134,8 @@ describe 'hf-lamp::web' do
       :passwd => false,
       :extra_directives => [],
       :canonical_redirect => false,
-      :name => 'stage.andy-gale.com'
+      :name => 'stage.andy-gale.com',
+      :vagrant => false
     )
   end
 
@@ -152,7 +157,8 @@ describe 'hf-lamp::web' do
       :passwd => false,
       :extra_directives => [],
       :canonical_redirect => false,
-      :name => 'andy-gale.com'
+      :name => 'andy-gale.com',
+      :vagrant => false
     )
   end
 
@@ -266,7 +272,8 @@ describe 'hf-lamp::web' do
       :passwd => true,
       :extra_directives => [],
       :canonical_redirect => false,
-      :name => 'andy-gale.com'
+      :name => 'andy-gale.com',
+      :vagrant => false
     )
   end
 
@@ -289,7 +296,31 @@ describe 'hf-lamp::web' do
       :passwd => false,
       :extra_directives => [],
       :canonical_redirect => false,
-      :name => 'andy-gale.com'
+      :name => 'andy-gale.com',
+      :vagrant => false
+    )
+  end
+
+  it 'honours the vagrant attribute' do
+    chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'vagrant' => true, 'host' => 'andy-gale.com' }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_template(sites_available + '/andy-gale.com.conf').with_params(
+      :template => 'site.conf.erb',
+      :local => false,
+      :enable => true,
+      :server_name => 'andy-gale.com',
+      :port => 80,
+      :log_path => '/var/www/andy-gale.com',
+      :log_format => 'combined',
+      :path => '/var/www/andy-gale.com',
+      :docroot => '/var/www/andy-gale.com/www',
+      :server_aliases => [],
+      :url_redirects => {},
+      :passwd => false,
+      :extra_directives => [],
+      :canonical_redirect => false,
+      :name => 'andy-gale.com',
+      :vagrant => true
     )
   end
 end

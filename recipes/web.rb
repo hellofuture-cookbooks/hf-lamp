@@ -34,7 +34,7 @@ else
   end
 end
 
-node['hf-lamp']['use_sites'] = sites
+node.set['hf-lamp']['use_sites'] = sites
 
 sites.each do |item|
   # Any virtual host aliases?
@@ -69,6 +69,12 @@ sites.each do |item|
     docroot = path + '/' + node['hf-lamp']['web-dir']
   else
     docroot = path
+  end
+
+  if item.key?('vagrant')
+    vagrant = true
+  else
+    vagrant = false
   end
 
   # Use default apache users not root
@@ -202,6 +208,7 @@ sites.each do |item|
     passwd passwd
     extra_directives extra_directives
     canonical_redirect canonical_redirect
+    vagrant vagrant
   end
 end
 

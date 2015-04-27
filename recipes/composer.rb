@@ -7,11 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
-
 composer_done = false
 
-node['hf-lamp']['use_sites'].each do
-
+node['hf-lamp']['use_sites'].each do |item|
   # Only include the composer recipe if we need to
 
   next unless item.key?('composer')
