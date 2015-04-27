@@ -302,7 +302,8 @@ describe 'hf-lamp::web' do
   end
 
   it 'honours the vagrant attribute' do
-    chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'vagrant' => true, 'host' => 'andy-gale.com' }]
+    chef_run.node.automatic['hf-lamp']['vagrant'] = true
+    chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'host' => 'andy-gale.com' }]
     chef_run.converge(described_recipe)
     expect(chef_run).to create_template(sites_available + '/andy-gale.com.conf').with_params(
       :template => 'site.conf.erb',

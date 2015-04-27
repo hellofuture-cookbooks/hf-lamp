@@ -71,7 +71,7 @@ sites.each do |item|
     docroot = path
   end
 
-  if item.key?('vagrant')
+  if node['hf-lamp']['vagrant']
     vagrant = true
   else
     vagrant = false
