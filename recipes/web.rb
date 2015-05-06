@@ -8,6 +8,7 @@
 #
 
 node.set['apache']['mpm'] = 'prefork'
+log(node['apache']['version'])
 
 include_recipe 'hf-lamp::web_dependencies'
 
@@ -189,6 +190,12 @@ sites.each do |item|
     extra_directives = []
   end
 
+  if item.key?('directory_directives')
+    directory_directives = item['directory_directives']
+  else
+    directory_directives = []
+  end
+
   if item.key?('canonical_redirect')
     canonical_redirect = true
   else
@@ -207,6 +214,7 @@ sites.each do |item|
     url_redirects redirects
     passwd passwd
     extra_directives extra_directives
+    directory_directives directory_directives
     canonical_redirect canonical_redirect
     vagrant vagrant
   end

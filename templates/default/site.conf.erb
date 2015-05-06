@@ -16,6 +16,12 @@
     Allow from all
   <% end -%>
    
+    <% unless @params[:directory_directives].empty? %>
+    <% @params[:directory_directives].each do |dir| %>
+    <%= dir %>
+    <% end %>
+    <% end %>
+
     <% if @params[:passwd] %>
     AuthType Basic
     AuthName "Restricted Files"
@@ -61,7 +67,7 @@
   <% end %>
   <% end %>
   
-  <% if @params[:vagrant] %>EnableSendfile Off<% end %>
+    <% if @params[:vagrant] %>EnableSendfile Off<% end %>
 
   <% if @params[:canonical_redirect] %>
   # Canonical host, <%= @params[:server_name] %>

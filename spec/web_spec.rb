@@ -41,6 +41,7 @@ describe 'hf-lamp::web' do
       :url_redirects => {},
       :passwd => false,
       :extra_directives => [],
+      :directory_directives => [],
       :canonical_redirect => false,
       :name => 'andy-gale.com',
       :vagrant => false
@@ -64,6 +65,7 @@ describe 'hf-lamp::web' do
       :url_redirects => {},
       :passwd => false,
       :extra_directives => [],
+      :directory_directives => [],
       :canonical_redirect => false,
       :name => 'andy-gale.com',
       :vagrant => false
@@ -87,6 +89,7 @@ describe 'hf-lamp::web' do
       :url_redirects => { '/redirect' => '/redirect_to' },
       :passwd => false,
       :extra_directives => [],
+      :directory_directives => [],
       :canonical_redirect => false,
       :name => 'andy-gale.com',
       :vagrant => false
@@ -110,6 +113,7 @@ describe 'hf-lamp::web' do
       :url_redirects => {},
       :passwd => false,
       :extra_directives => [],
+      :directory_directives => [],
       :canonical_redirect => false,
       :name => 'andy-gale.com',
       :vagrant => false
@@ -133,6 +137,7 @@ describe 'hf-lamp::web' do
       :url_redirects => {},
       :passwd => false,
       :extra_directives => [],
+      :directory_directives => [],
       :canonical_redirect => false,
       :name => 'stage.andy-gale.com',
       :vagrant => false
@@ -156,6 +161,7 @@ describe 'hf-lamp::web' do
       :url_redirects => {},
       :passwd => false,
       :extra_directives => [],
+      :directory_directives => [],
       :canonical_redirect => false,
       :name => 'andy-gale.com',
       :vagrant => false
@@ -271,6 +277,7 @@ describe 'hf-lamp::web' do
       :url_redirects => {},
       :passwd => true,
       :extra_directives => [],
+      :directory_directives => [],
       :canonical_redirect => false,
       :name => 'andy-gale.com',
       :vagrant => false
@@ -295,6 +302,7 @@ describe 'hf-lamp::web' do
       :url_redirects => {},
       :passwd => false,
       :extra_directives => [],
+      :directory_directives => [],
       :canonical_redirect => false,
       :name => 'andy-gale.com',
       :vagrant => false
@@ -319,6 +327,36 @@ describe 'hf-lamp::web' do
       :url_redirects => {},
       :passwd => false,
       :extra_directives => [],
+      :directory_directives => [],
+      :canonical_redirect => false,
+      :name => 'andy-gale.com',
+      :vagrant => true
+    )
+  end
+
+  it 'honours the directory_directives attribute' do
+    dir_dir = [
+      'RewriteEngine On', 'RewriteBase /', 'RewriteCond %{REQUEST_FILENAME} !-f',
+      'RewriteRule ^ index.php [QSA,L]'
+    ]
+    chef_run.node.automatic['hf-lamp']['vagrant'] = true
+    chef_run.node.automatic['hf-lamp']['sites'] = [{ 'id' => 'andygale', 'host' => 'andy-gale.com', 'directory_directives' => dir_dir }]
+    chef_run.converge(described_recipe)
+    expect(chef_run).to create_template(sites_available + '/andy-gale.com.conf').with_params(
+      :template => 'site.conf.erb',
+      :local => false,
+      :enable => true,
+      :server_name => 'andy-gale.com',
+      :port => 80,
+      :log_path => '/var/www/andy-gale.com',
+      :log_format => 'combined',
+      :path => '/var/www/andy-gale.com',
+      :docroot => '/var/www/andy-gale.com/www',
+      :server_aliases => [],
+      :url_redirects => {},
+      :passwd => false,
+      :extra_directives => [],
+      :directory_directives => dir_dir,
       :canonical_redirect => false,
       :name => 'andy-gale.com',
       :vagrant => true
