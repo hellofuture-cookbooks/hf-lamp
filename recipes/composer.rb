@@ -19,9 +19,9 @@ node['hf-lamp']['use_sites'].each do |item|
   end
 
   if item['composer'].key?('dev') && item['composer']['dev']
-    dev = false
-  else
     dev = true
+  else
+    dev = false
   end
 
   if item['composer'].key('path')
