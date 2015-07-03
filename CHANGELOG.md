@@ -3,6 +3,10 @@ hf-lamp CHANGELOG
 
 This file is used to list changes made in each version of the hf-lamp cookbook.
 
+0.1.20
+-----
+- Andy Gale - Fix composer dev bug
+
 0.1.12
 -----
 - Andy Gale - Added extra_directives data bag item 
