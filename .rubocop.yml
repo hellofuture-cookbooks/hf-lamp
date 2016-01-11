@@ -8,3 +8,6 @@ LineLength:
   Enabled: false
 MethodLength:
   Max: 30
+AllCops:
+  Exclude:
+    - 'libraries/hf_lamp.rb'

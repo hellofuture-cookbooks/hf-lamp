@@ -18,28 +18,12 @@ node['hf-lamp']['use_sites'].each do |item|
     composer_done = true
   end
 
-  if item['composer'].key?('dev') && item['composer']['dev']
-    dev = true
-  else
-    dev = false
-  end
+  hf = HfLamp.item(node, item)
 
-  if item['composer'].key('path')
-    composer_path = item['composer']['path']
-  else
-    composer_path = path
-  end
-
-  if item['composer'].key('action')
-    composer_action = item['composer']['action']
-  else
-    composer_action = :install
-  end
-
-  composer_project composer_path do
-    dev dev
+  composer_project hf[:composer_path] do
+    dev hf[:composer_dev]
     quiet true
-    action composer_action
-    only_if { ::File.exist?(File.join(composer_path, 'composer.json')) }
+    action hf[:composer_action]
+    only_if { ::File.exist?(File.join(hf[:composer_path], 'composer.json')) }
   end
 end

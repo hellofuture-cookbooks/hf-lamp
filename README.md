@@ -8,7 +8,8 @@ hf-lamp
 
 Multi-site and vagrant compatible cookbook for PHP apache hosting
 
-More docs and tests coming soon
+
+
 
 Recipes
 -------

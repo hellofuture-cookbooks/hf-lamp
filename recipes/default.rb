@@ -9,3 +9,4 @@
 
 include_recipe 'hf-lamp::mysql_server'
 include_recipe 'hf-lamp::web'
+include_recipe 'hf-lamp::composer'
