@@ -7,13 +7,12 @@
 # All rights reserved - Do Not Redistribute
 #
 
-node.set['apache']['mpm'] = 'prefork'
-log(node['apache']['version'])
+node.override['apache']['mpm'] = 'prefork'
 
 include_recipe 'hf-lamp::web_dependencies'
 
 template '/etc/php5/apache2/php.ini' do
-  source node.default['hf-lamp']['php']['php.ini']
+  source node['hf-lamp']['php']['php.ini']
   notifies :restart, 'service[apache2]'
   only_if { node['platform'] == 'ubuntu' }
 end
@@ -35,7 +34,7 @@ else
   end
 end
 
-node.set['hf-lamp']['use_sites'] = sites
+node.override['hf-lamp']['use_sites'] = sites
 
 sites.each do |item|
   # Any virtual host aliases?

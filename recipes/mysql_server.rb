@@ -27,19 +27,29 @@ sites.each do |item|
                     :username => 'root',
                     :password => node['mysql']['server_root_password'] }
 
-  next if !item.key?('db') && !item.key?('manage_db')
+  # Support both db and new dbs (i.e. more than one)
 
-  mysql_database item['db']['name'] do
-    connection db_connection
-    action :create
+  if !item.key?('dbs') && !item.key?('manage_db')
+    dbs = item['dbs']
+  else
+    dbs = []
   end
 
-  mysql_database_user item['db']['user'] do
-    connection db_connection
-    password item['db']['password']
-    database_name item['db']['name']
-    host item['db']['host']
-    privileges [:select, :update, :alter, :insert, :create, :delete]
-    action :grant
+  dbs.push(item['db']) if !item.key?('db') && !item.key?('manage_db')
+
+  dbs.each do |db|
+    mysql_database db['name'] do
+      connection db_connection
+      action :create
+    end
+
+    mysql_database_user db['user'] do
+      connection db_connection
+      password db['password']
+      database_name db['name']
+      host db['host']
+      privileges [:select, :update, :alter, :insert, :create, :delete]
+      action :grant
+    end
   end
 end

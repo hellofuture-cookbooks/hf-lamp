@@ -10,7 +10,7 @@
 
 if platform?('ubuntu') && node['platform_version'] == '12.04'
   include_recipe 'apt'
-  node.default['hf-lamp']['php']['php.ini'] = 'apache-php-54.ini.erb'
+  node.override['hf-lamp']['php']['php.ini'] = 'apache-php-54.ini.erb'
 
   apt_repository 'ondrej-php5-oldstable' do
     uri 'http://ppa.launchpad.net/ondrej/php5-oldstable/ubuntu'
