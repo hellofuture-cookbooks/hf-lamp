@@ -6,9 +6,9 @@ provisioner:
   name: chef_solo
 
 platforms:
-  - name: ubuntu-12.04
+  # - name: ubuntu-12.04
   - name: ubuntu-14.04
-  - name: centos-6.8
+  # - name: centos-6.8
 
 suites:
   - name: default
@@ -29,6 +29,28 @@ suites:
               user: 'a'
               password: 'a'
               host: 'localhost'
+            dbs:
+              - name: 'b'
+                user: 'b'
+                password: 'b'
+                host: 'localhost'
+              - name: 'c'
+                user: 'c'
+                password: 'c'
+                host: 'localhost'
+  - name: genie
+    run_list:
+      - recipe[hf-lamp::default]
+    attributes:
+      mysql:
+        server_debian_password: ZWE3aruaa4Hryv9k
+        server_root_password: LnHy5XDYqftLXFUU
+        server_repl_password: QcXUqg8hjtDbZxtU
+      hf-lamp:
+        sites:
+          - id: genie
+            host: genie.com
+            manage_db: y
             dbs:
               - name: 'b'
                 user: 'b'

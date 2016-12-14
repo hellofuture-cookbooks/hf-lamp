@@ -29,25 +29,40 @@ sites.each do |item|
 
   # Support both db and new dbs (i.e. more than one)
 
-  if !item.key?('dbs') && !item.key?('manage_db')
-    dbs = item['dbs']
-  else
-    dbs = []
+  next unless item.key?('manage_db')
+
+  dbs = []
+
+  if item.key?('dbs')
+    item['dbs'].each do |db|
+      dbs.push(
+        name: db['name'],
+        user: db['user'],
+        password: db['password'],
+        host: db['host']
+      )
+    end
   end
 
-  dbs.push(item['db']) if !item.key?('db') && !item.key?('manage_db')
+  dbs.push(
+    name: item['db']['name'],
+    user: item['db']['user'],
+    password: item['db']['password'],
+    host: item['db']['host']
+  ) if item.key?('db')
 
   dbs.each do |db|
-    mysql_database db['name'] do
+    log db
+    mysql_database db[:name] do
       connection db_connection
       action :create
     end
 
-    mysql_database_user db['user'] do
+    mysql_database_user db[:user] do
       connection db_connection
-      password db['password']
-      database_name db['name']
-      host db['host']
+      password db[:password]
+      database_name db[:name]
+      host db[:host]
       privileges [:select, :update, :alter, :insert, :create, :delete]
       action :grant
     end
